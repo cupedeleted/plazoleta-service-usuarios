@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
     public class UsuarioUseCase implements UsuarioServicePort{
         private static final Pattern patron = Pattern.compile("^\\d+$");
+        private static final Pattern max_telefono = Pattern.compile("^\\+?\\d+$");
         private final UsuarioRepositoryPort usuarioRepositoryPort;
         private final RolRepositoryPort rolRepositoryPort;
         private final EncriptadorClavePort encriptadorClavePort;
@@ -24,6 +25,7 @@ import java.util.regex.Pattern;
     public Usuario crearPropietario(Usuario usuario) {
         ValidarCampos(usuario);
         validarDocumento(usuario.getDocumentoDeIdentidad());
+        validarCelular(usuario.getCelular());
         return usuarioRepositoryPort.guardarUsuario(usuario);
     }
 
@@ -41,6 +43,11 @@ import java.util.regex.Pattern;
     private void validarDocumento(String documento){
         if(!patron.matcher(documento).matches()){
             throw new DatoInvalido("El documento de identidad debe ser unicamente numerico");
+        }
+    }
+    private void validarCelular(String telefono){
+        if(telefono.length() > 13 || max_telefono.matcher(telefono).matches()){
+            throw new DatoInvalido("El celular debe tener maximo 13 caracteres y puede iniciar con +");
         }
     }
 }
