@@ -6,6 +6,8 @@ import com.example.usuarios.domain.spi.EncriptadorClavePort;
 import com.example.usuarios.domain.spi.RolRepositoryPort;
 import com.example.usuarios.domain.spi.UsuarioRepositoryPort;
 import java.util.regex.Pattern;
+import java.time.LocalDate;
+import java.time.Period;
 
     public class UsuarioUseCase implements UsuarioServicePort{
         private static final Pattern patron = Pattern.compile("^\\d+$");
@@ -24,14 +26,15 @@ import java.util.regex.Pattern;
 
     @Override
     public Usuario crearPropietario(Usuario usuario) {
-        ValidarCampos(usuario);
+        validarCampos(usuario);
         validarDocumento(usuario.getDocumentoDeIdentidad());
         validarCelular(usuario.getCelular());
         validarCorreo(usuario.getCorreo());
+        validarMayorEdad(usuario.getFechaNacimiento());
         return usuarioRepositoryPort.guardarUsuario(usuario);
     }
 
-    private void ValidarCampos(Usuario u) {
+    private void validarCampos(Usuario u) {
         if(vacio(u.getNombre()) || vacio(u.getApellido()) || vacio(u.getDocumentoDeIdentidad()) || vacio(u.getCelular())
             || u.getFechaNacimiento() == null || vacio(u.getCorreo()) || vacio(u.getClave())) {
         throw new DatoInvalido("Todos los campos son obligatorios");
@@ -48,7 +51,7 @@ import java.util.regex.Pattern;
         }
     }
     private void validarCelular(String telefono){
-        if(telefono.length() > 13 || max_telefono.matcher(telefono).matches()){
+        if(telefono.length() > 13 || !max_telefono.matcher(telefono).matches()){
             throw new DatoInvalido("El celular debe tener maximo 13 caracteres y puede iniciar con +");
         }
     }
@@ -56,5 +59,11 @@ import java.util.regex.Pattern;
         if(!email_validar.matcher(email).matches()){
             throw new DatoInvalido("El correo no tiene un formato válido. Ejemplo: usuario@gmail.com");
         }
+    }
+    private void validarMayorEdad(LocalDate fechaDeNacimiento){
+        int edad = Period.between(fechaDeNacimiento, LocalDate.now()).getYears();
+            if(edad < 18){
+            throw new DatoInvalido("El usuario debe ser mayor de edad");    
+         }
     }
 }
