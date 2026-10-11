@@ -37,7 +37,7 @@ public class UsuarioUseCase implements UsuarioServicePort {
         validarMayorEdad(usuario.getFechaNacimiento());
         Rol rolPropietario = rolRepositoryPort.buscarPorNombre(rol).orElseThrow(() -> new RolNoEncontrado(rol));
         usuario.setRol(rolPropietario);
-       
+        usuario.setClave(encriptadorClavePort.encriptar(usuario.getClave()));
         return usuarioRepositoryPort.guardarUsuario(usuario);
         
         
