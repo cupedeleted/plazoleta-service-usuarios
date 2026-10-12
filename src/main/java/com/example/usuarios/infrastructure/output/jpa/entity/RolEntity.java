@@ -1,4 +1,4 @@
-package com.example.usuarios.infrastructure.output;
+package com.example.usuarios.infrastructure.output.jpa.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

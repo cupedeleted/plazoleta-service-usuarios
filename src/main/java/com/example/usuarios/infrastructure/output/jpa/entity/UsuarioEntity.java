@@ -1,8 +1,7 @@
-package com.example.usuarios.infrastructure.output;
+package com.example.usuarios.infrastructure.output.jpa.entity;
 
 import java.time.LocalDate;
 
-import org.hibernate.annotations.ManyToAny;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
