@@ -33,8 +33,8 @@ public class UsuarioMapper {
             return null;
         }
         UsuarioEntity entity = new UsuarioEntity();
-        // En el dominio el id es long: 0 significa "usuario nuevo", y JPA necesita null
-        entity.setId(usuario.getId() == 0 ? null : usuario.getId());
+        
+        entity.setId(usuario.getId());
         entity.setNombre(usuario.getNombre());
         entity.setApellido(usuario.getApellido());
         entity.setDocumentoDeIdentidad(usuario.getDocumentoDeIdentidad());
