@@ -15,8 +15,8 @@ public class UsuarioHandle {
         this.usuarioRestMapper = usuarioRestMapper;
     }
 
-    public UsuarioResponseDto crearPropietario(UsuarioDto request) {
-        Usuario usuario = usuarioRestMapper.toDomain(request);
+    public UsuarioResponseDto crearPropietario(UsuarioDto solicitud) {
+        Usuario usuario = usuarioRestMapper.toDomain(solicitud);
         Usuario creado = usuarioServicePort.crearPropietario(usuario);
         return usuarioRestMapper.toResponse(creado);
     }

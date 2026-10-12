@@ -2,7 +2,8 @@ package com.example.usuarios.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import com.example.usuarios.application.handle.UsuarioHandle;
+import com.example.usuarios.infrastructure.input.rest.mapper.UsuarioRestMapper;
 import com.example.usuarios.application.usecase.UsuarioUseCase;
 import com.example.usuarios.domain.api.UsuarioServicePort;
 import com.example.usuarios.domain.spi.EncriptadorClavePort;
@@ -28,11 +29,12 @@ public class BeanConfiguration {
         return new UsuarioMapper(rolMapper);
     }
 
-    @Bean 
-    public UsuarioRepositoryPort usuarioRepositoryPort(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper){
+    @Bean
+    public UsuarioRepositoryPort usuarioRepositoryPort(UsuarioRepository usuarioRepository,
+            UsuarioMapper usuarioMapper) {
         return new UsuarioAdapter(usuarioRepository, usuarioMapper);
 
-}
+    }
 
     @Bean
     public RolRepositoryPort rolRepositoryPort(RolRepository rolRepository, RolMapper rolMapper) {
@@ -48,5 +50,16 @@ public class BeanConfiguration {
     public UsuarioServicePort usuarioServicePort(UsuarioRepositoryPort usuarioRepositoryPort,
             RolRepositoryPort rolRepositoryPort, EncriptadorClavePort encriptadorClavePort) {
         return new UsuarioUseCase(usuarioRepositoryPort, rolRepositoryPort, encriptadorClavePort);
+    }
+
+    @Bean
+    public UsuarioRestMapper usuarioRestMapper() {
+        return new UsuarioRestMapper();
+    }
+
+    @Bean
+    public UsuarioHandle usuarioHandle(UsuarioServicePort usuarioServicePort,
+            UsuarioRestMapper usuarioRestMapper) {
+        return new UsuarioHandle(usuarioServicePort, usuarioRestMapper);
     }
 }
