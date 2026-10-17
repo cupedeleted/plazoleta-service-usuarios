@@ -1,10 +1,10 @@
-package com.example.usuarios.application.handle;
+package com.example.usuarios.application.handler;
 
 import com.example.usuarios.domain.api.UsuarioServicePort;
-import com.example.usuarios.domain.model.Usuario;
-import com.example.usuarios.infrastructure.input.rest.dto.UsuarioDto;
-import com.example.usuarios.infrastructure.input.rest.dto.UsuarioResponseDto;
-import com.example.usuarios.infrastructure.input.rest.mapper.UsuarioRestMapper;
+import com.example.usuarios.domain.model.User;
+import com.example.usuarios.application.dto.UsuarioDto;
+import com.example.usuarios.application.dto.UsuarioResponseDto;
+import com.example.usuarios.application.mapper.UsuarioRestMapper;
 
 public class UsuarioHandle {
     private final UsuarioServicePort usuarioServicePort;
@@ -16,8 +16,8 @@ public class UsuarioHandle {
     }
 
     public UsuarioResponseDto crearPropietario(UsuarioDto solicitud) {
-        Usuario usuario = usuarioRestMapper.toDomain(solicitud);
-        Usuario creado = usuarioServicePort.crearPropietario(usuario);
+        User usuario = usuarioRestMapper.toDomain(solicitud);
+        User creado = usuarioServicePort.crearPropietario(usuario);
         return usuarioRestMapper.toResponse(creado);
     }
 }

@@ -2,7 +2,7 @@ package com.example.usuarios.application.usecase;
 
 import com.example.usuarios.domain.exception.DatoInvalido;
 import com.example.usuarios.domain.api.UsuarioServicePort;
-import com.example.usuarios.domain.model.Usuario;
+import com.example.usuarios.domain.model.User;
 import com.example.usuarios.domain.spi.EncriptadorClavePort;
 import com.example.usuarios.domain.spi.RolRepositoryPort;
 import com.example.usuarios.domain.spi.UsuarioRepositoryPort;
@@ -29,7 +29,7 @@ public class UsuarioUseCase implements UsuarioServicePort {
     }
 
     @Override
-    public Usuario crearPropietario(Usuario usuario) {
+    public User crearPropietario(User usuario) {
         validarCampos(usuario);
         validarDocumento(usuario.getDocumentoDeIdentidad());
         validarCelular(usuario.getCelular());
@@ -43,7 +43,7 @@ public class UsuarioUseCase implements UsuarioServicePort {
         
     }
 
-    private void validarCampos(Usuario u) {
+    private void validarCampos(User u) {
         if (vacio(u.getNombre()) || vacio(u.getApellido()) || vacio(u.getDocumentoDeIdentidad())
                 || vacio(u.getCelular())
                 || u.getFechaNacimiento() == null || vacio(u.getCorreo()) || vacio(u.getClave())) {

@@ -1,12 +1,12 @@
-package com.example.usuarios.infrastructure.input.rest.mapper;
+package com.example.usuarios.application.mapper;
 
-import com.example.usuarios.domain.model.Usuario;
-import com.example.usuarios.infrastructure.input.rest.dto.UsuarioDto;
-import com.example.usuarios.infrastructure.input.rest.dto.UsuarioResponseDto;
+import com.example.usuarios.domain.model.User;
+import com.example.usuarios.application.dto.UsuarioDto;
+import com.example.usuarios.application.dto.UsuarioResponseDto;
 
 public class UsuarioRestMapper {
-    public Usuario toDomain(UsuarioDto dto) {
-        Usuario usuario = new Usuario();
+    public User toDomain(UsuarioDto dto) {
+        User usuario = new User();
         usuario.setNombre(dto.getNombre());
         usuario.setApellido(dto.getApellido());
         usuario.setDocumentoDeIdentidad(dto.getDocumentoDeIdentidad());
@@ -17,7 +17,7 @@ public class UsuarioRestMapper {
         return usuario;
     }
 
-    public UsuarioResponseDto toResponse(Usuario usuario) {
+    public UsuarioResponseDto toResponse(User usuario) {
         UsuarioResponseDto dto = new UsuarioResponseDto();
         dto.setId(usuario.getId());
         dto.setNombre(usuario.getNombre());

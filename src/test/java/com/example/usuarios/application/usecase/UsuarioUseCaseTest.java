@@ -18,7 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.example.usuarios.domain.exception.DatoInvalido;
 import com.example.usuarios.domain.exception.RolNoEncontrado;
 import com.example.usuarios.domain.model.Rol;
-import com.example.usuarios.domain.model.Usuario;
+import com.example.usuarios.domain.model.User;
 import com.example.usuarios.domain.spi.EncriptadorClavePort;
 import com.example.usuarios.domain.spi.RolRepositoryPort;
 import com.example.usuarios.domain.spi.UsuarioRepositoryPort;
@@ -38,8 +38,8 @@ class UsuarioUseCaseTest {
     @InjectMocks
     private UsuarioUseCase usuarioUseCase;
     
-    private Usuario registroValido(){
-        Usuario usuario = new Usuario();
+    private User registroValido(){
+        User usuario = new User();
         usuario.setNombre("Carla");
         usuario.setApellido("Granados");
         usuario.setDocumentoDeIdentidad("1130268043");
@@ -55,49 +55,49 @@ class UsuarioUseCaseTest {
         }
         @Test 
         void noHayDatos(){
-            Usuario usuario= new Usuario();
+            User usuario= new User();
             assertThrows(DatoInvalido.class, () -> usuarioUseCase.crearPropietario(usuario));
         }
         @Test 
         void documentoConLetras(){
-            Usuario usuario= registroValido();
+            User usuario= registroValido();
             usuario.setDocumentoDeIdentidad("12as");
             assertThrows(DatoInvalido.class,() -> usuarioUseCase.crearPropietario(usuario));
     }
         @Test 
         void celularMuyLargo(){
-            Usuario usuario = registroValido();
+            User usuario = registroValido();
             usuario.setCelular("+5730056983251");
             assertThrows(DatoInvalido.class, () -> usuarioUseCase.crearPropietario(usuario));
     
         }
         @Test 
         void correoInvalido(){
-            Usuario usuario = registroValido();
+            User usuario = registroValido();
             usuario.setCorreo("azk12");
             assertThrows(DatoInvalido.class, () -> usuarioUseCase.crearPropietario(usuario));   
         }
         @Test 
         void mayorEdad(){
-            Usuario usuario = registroValido();
+            User usuario = registroValido();
             usuario.setFechaNacimiento(LocalDate.now().minusYears(10));
             assertThrows(DatoInvalido.class, () -> usuarioUseCase.crearPropietario(usuario));
         }  
         @Test 
         void rolNoEncontrado() {
-            Usuario usuario = registroValido();
+            User usuario = registroValido();
             when(rolRepositoryPort.buscarPorNombre("PROPIETARIO")).thenReturn(Optional.empty());
             assertThrows(RolNoEncontrado.class,() -> usuarioUseCase.crearPropietario(usuario));
     }
         @Test 
         void datosValidos(){
-            Usuario usuario = registroValido();
+            User usuario = registroValido();
             Rol rol = new Rol(1L, "PROPIETARIO", "Propietario");
             when(rolRepositoryPort.buscarPorNombre("PROPIETARIO")).thenReturn(Optional.of(rol));
             when(encriptadorClavePort.encriptar("123")).thenReturn("clave");
             when(usuarioRepositoryPort.guardarUsuario(usuario)).thenReturn(usuario);
 
-            Usuario resultado = usuarioUseCase.crearPropietario(usuario);
+            User resultado = usuarioUseCase.crearPropietario(usuario);
             assertEquals("PROPIETARIO", resultado.getRol().getNombre());
             assertEquals("clave", resultado.getClave());
             verify(usuarioRepositoryPort).guardarUsuario(usuario);

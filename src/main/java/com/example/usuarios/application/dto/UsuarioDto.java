@@ -1,23 +1,16 @@
-package com.example.usuarios.infrastructure.input.rest.dto;
+package com.example.usuarios.application.dto;
 
 import java.time.LocalDate;
 
-public class UsuarioResponseDto {
-    private Long id;
+public class UsuarioDto {
     private String nombre;
     private String apellido;
     private String documentoDeIdentidad;
     private String celular;
     private LocalDate fechaNacimiento;
     private String correo;
-    private String rol;
-    public UsuarioResponseDto() {
-    }
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
+    private String clave;
+    public UsuarioDto() {
     }
     public String getNombre() {
         return nombre;
@@ -55,11 +48,11 @@ public class UsuarioResponseDto {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
-    public String getRol() {
-        return rol;
+    public String getClave() {
+        return clave;
     }
-    public void setRol(String rol) {
-        this.rol = rol;
+    public void setClave(String clave) {
+        this.clave = clave;
     }
     
 }

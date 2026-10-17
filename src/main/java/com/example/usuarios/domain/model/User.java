@@ -2,7 +2,7 @@ package com.example.usuarios.domain.model;
 
 import java.time.LocalDate;
 
-public class Usuario {
+public class User {
     private String nombre;
     private String apellido;
     private long id;

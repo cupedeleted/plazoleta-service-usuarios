@@ -1,7 +1,7 @@
 package com.example.usuarios.domain.api;
 
-import com.example.usuarios.domain.model.Usuario;
+import com.example.usuarios.domain.model.User;
 
 public interface UsuarioServicePort {
-    Usuario crearPropietario(Usuario usuario);
+    User crearPropietario(User usuario);
 }

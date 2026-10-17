@@ -1,8 +1,8 @@
 package com.example.usuarios.domain.spi;
 
-import com.example.usuarios.domain.model.Usuario;
+import com.example.usuarios.domain.model.User;
 
 public interface UsuarioRepositoryPort {
-    Usuario guardarUsuario (Usuario usuario);
+    User guardarUsuario (User usuario);
     
 }

@@ -1,6 +1,6 @@
 package com.example.usuarios.infrastructure.output.jpa.mapper;
 
-import com.example.usuarios.domain.model.Usuario;
+import com.example.usuarios.domain.model.User;
 import com.example.usuarios.infrastructure.output.jpa.entity.UsuarioEntity;
 
 public class UsuarioMapper {
@@ -11,12 +11,12 @@ public class UsuarioMapper {
             this.rolMapper = rolMapper;
         }
         
-    public Usuario toDomain(UsuarioEntity usuarioEntity){
+    public User toDomain(UsuarioEntity usuarioEntity){
         if(usuarioEntity == null){
             return  null;
 
 }
-        Usuario usuario = new Usuario();
+        User usuario = new User();
         usuario.setId(usuarioEntity.getId());
         usuario.setNombre(usuarioEntity.getNombre());
         usuario.setApellido(usuarioEntity.getApellido());
@@ -28,7 +28,7 @@ public class UsuarioMapper {
         usuario.setRol(rolMapper.toDomain(usuarioEntity.getRol()));
         return usuario;
 }
-        public UsuarioEntity toEntity(Usuario usuario) {
+        public UsuarioEntity toEntity(User usuario) {
         if (usuario == null) {
             return null;
         }

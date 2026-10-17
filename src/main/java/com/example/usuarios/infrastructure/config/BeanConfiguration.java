@@ -2,8 +2,9 @@ package com.example.usuarios.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import com.example.usuarios.application.handle.UsuarioHandle;
-import com.example.usuarios.infrastructure.input.rest.mapper.UsuarioRestMapper;
+
+import com.example.usuarios.application.handler.UsuarioHandle;
+import com.example.usuarios.application.mapper.UsuarioRestMapper;
 import com.example.usuarios.application.usecase.UsuarioUseCase;
 import com.example.usuarios.domain.api.UsuarioServicePort;
 import com.example.usuarios.domain.spi.EncriptadorClavePort;
