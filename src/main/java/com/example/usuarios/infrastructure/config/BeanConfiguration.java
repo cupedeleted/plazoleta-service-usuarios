@@ -10,13 +10,13 @@ import com.example.usuarios.domain.api.UsuarioServicePort;
 import com.example.usuarios.domain.spi.EncriptadorClavePort;
 import com.example.usuarios.domain.spi.RolRepositoryPort;
 import com.example.usuarios.domain.spi.UsuarioRepositoryPort;
+import com.example.usuarios.infrastructure.config.security.BCryptEncriptadorAdapter;
 import com.example.usuarios.infrastructure.output.jpa.adapter.RolAdapter;
 import com.example.usuarios.infrastructure.output.jpa.adapter.UsuarioAdapter;
 import com.example.usuarios.infrastructure.output.jpa.mapper.RolMapper;
 import com.example.usuarios.infrastructure.output.jpa.mapper.UsuarioMapper;
 import com.example.usuarios.infrastructure.output.jpa.repository.RolRepository;
 import com.example.usuarios.infrastructure.output.jpa.repository.UsuarioRepository;
-import com.example.usuarios.infrastructure.security.BCryptEncriptadorAdapter;
 
 @Configuration
 public class BeanConfiguration {
