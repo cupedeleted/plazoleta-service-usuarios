@@ -1,7 +1,7 @@
 package com.example.usuarios.application.usecase;
 
 import com.example.usuarios.domain.exception.DatoInvalido;
-import com.example.usuarios.domain.api.UsuarioServicePort;
+import com.example.usuarios.domain.api.IUsuarioServicePort;
 import com.example.usuarios.domain.model.User;
 import com.example.usuarios.domain.spi.EncriptadorClavePort;
 import com.example.usuarios.domain.spi.RolRepositoryPort;
@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 import java.time.LocalDate;
 import java.time.Period;
 
-public class UsuarioUseCase implements UsuarioServicePort {
+public class UsuarioUseCase implements IUsuarioServicePort {
     private static final Pattern patron = Pattern.compile("^\\d+$");
     private static final Pattern max_telefono = Pattern.compile("^\\+?\\d+$");
     private static final Pattern email_validar = Pattern.compile("^[\\w.+-]+@[\\w-]+(\\.[\\w-]+)+$");

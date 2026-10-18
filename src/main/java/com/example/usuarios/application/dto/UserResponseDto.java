@@ -2,7 +2,7 @@ package com.example.usuarios.application.dto;
 
 import java.time.LocalDate;
 
-public class UsuarioResponseDto {
+public class UserResponseDto {
     private Long id;
     private String nombre;
     private String apellido;
@@ -11,7 +11,8 @@ public class UsuarioResponseDto {
     private LocalDate fechaNacimiento;
     private String correo;
     private String rol;
-    public UsuarioResponseDto() {
+    private String clave;
+    public UserResponseDto() {
     }
     public Long getId() {
         return id;
@@ -60,6 +61,12 @@ public class UsuarioResponseDto {
     }
     public void setRol(String rol) {
         this.rol = rol;
+    }
+    public String getClave() {
+        return clave;
+    }
+    public void setClave(String clave) {
+        this.clave = clave;
     }
     
 }

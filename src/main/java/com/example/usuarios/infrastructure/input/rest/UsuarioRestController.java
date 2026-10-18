@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.usuarios.application.handler.UsuarioHandle;
-import com.example.usuarios.application.dto.UsuarioDto;
-import com.example.usuarios.application.dto.UsuarioResponseDto;
+import com.example.usuarios.application.dto.UserResponseDto;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -18,11 +17,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/usuarios")
 @Tag(name = "Usuarios", description = "Gestión de usuarios")
-public class UsuarioController {
+public class UsuarioRestController {
 
     private final UsuarioHandle usuarioHandle;
 
-    public UsuarioController(UsuarioHandle usuarioHandle) {
+    public UsuarioRestController(UsuarioHandle usuarioHandle) {
         this.usuarioHandle = usuarioHandle;
     }
 
@@ -31,8 +30,8 @@ public class UsuarioController {
     @ApiResponse(responseCode = "400", description = "Datos inválidos")
     @ApiResponse(responseCode = "500", description = "Rol propietario no encontrado")
     @PostMapping("/propietario")
-    public ResponseEntity<UsuarioResponseDto> crearPropietario(@RequestBody UsuarioDto solicitud) {
-        UsuarioResponseDto creado = usuarioHandle.crearPropietario(solicitud);
+    public ResponseEntity<UserResponseDto> crearPropietario(@RequestBody UserResponseDto solicitud) {
+        UserResponseDto creado = usuarioHandle.crearPropietario(solicitud);
         return ResponseEntity.status(HttpStatus.CREATED).body(creado);
     }
 }

@@ -2,7 +2,7 @@ package com.example.usuarios.application.usecase;
 
 import com.example.usuarios.application.dto.AuthResponseDto;
 import com.example.usuarios.domain.api.IAuthServicePort;
-import com.example.usuarios.domain.spi.ITokenServicePort; // O el puerto correspondiente para autenticar
+import com.example.usuarios.domain.api.ITokenServicePort;
 
 public class AuthUseCase implements IAuthServicePort {
 
