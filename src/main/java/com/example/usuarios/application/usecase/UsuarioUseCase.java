@@ -39,8 +39,18 @@ public class UsuarioUseCase implements UsuarioServicePort {
         usuario.setRol(rolPropietario);
         usuario.setClave(encriptadorClavePort.encriptar(usuario.getClave()));
         return usuarioRepositoryPort.guardarUsuario(usuario);
-        
-        
+
+    }
+    @Override
+    public Usuario crearCliente(Usuario usuario) {
+        validarCamposUsuarios(usuario);
+        validarDocumento(usuario.getDocumentoDeIdentidad());
+        validarCorreo(usuario.getCorreo());
+        validarCelular(usuario.getCelular());
+        Rol rolCliente =  rolRepositoryPort.buscarPorNombre("CLIENTE").orElseThrow(() -> new RolNoEncontrado("CLIENTE"));
+        usuario.setRol(rolCliente);
+        usuario.setClave(encriptadorClavePort.encriptar(usuario.getClave()));
+        return usuarioRepositoryPort.guardarUsuario(usuario);
     }
 
     private void validarCampos(Usuario u) {
@@ -49,6 +59,13 @@ public class UsuarioUseCase implements UsuarioServicePort {
                 || u.getFechaNacimiento() == null || vacio(u.getCorreo()) || vacio(u.getClave())) {
             throw new DatoInvalido("Todos los campos son obligatorios");
         }
+    }
+
+    private void validarCamposUsuarios(Usuario u) {
+        if (vacio(u.getNombre()) || vacio(u.getApellido()) || vacio(u.getDocumentoDeIdentidad())
+                || vacio(u.getCelular()) || vacio(u.getCorreo()) || vacio(u.getClave()))
+            
+        throw new DatoInvalido("Todos los campos son obligatorios");
     }
 
     private boolean vacio(String text) {
@@ -79,4 +96,6 @@ public class UsuarioUseCase implements UsuarioServicePort {
             throw new DatoInvalido("El usuario debe ser mayor de edad");
         }
     }
-}           
+
+    
+}

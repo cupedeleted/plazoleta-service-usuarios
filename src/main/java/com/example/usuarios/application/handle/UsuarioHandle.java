@@ -20,5 +20,10 @@ public class UsuarioHandle {
         Usuario creado = usuarioServicePort.crearPropietario(usuario);
         return usuarioRestMapper.toResponse(creado);
     }
-}
 
+    public UsuarioResponseDto crearCliente(UsuarioDto solicitud) {
+        Usuario usuario = usuarioRestMapper.toDomain(solicitud);
+        Usuario creado = usuarioServicePort.crearCliente(usuario);
+        return usuarioRestMapper.toResponse(creado);
+    }
+}

@@ -1,7 +1,7 @@
+
 package com.example.usuarios.infrastructure.output.jpa.entity;
 
 import java.time.LocalDate;
-
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,13 +13,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-@Entity 
+@Entity
 @Table(name = "usuarios")
 public class UsuarioEntity {
-    @Id 
+
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Column(nullable = false, length = 100)
     private String nombre;
 
@@ -32,8 +33,8 @@ public class UsuarioEntity {
     @Column(nullable = false, length = 13)
     private String celular;
 
-    @Column(name = "fecha_nacimiento", nullable = false)
-        private LocalDate fechaNacimiento;
+    @Column(name = "fecha_nacimiento", nullable = true)
+    private LocalDate fechaNacimiento;
 
     @Column(nullable = false, length = 150)
     private String correo;
@@ -119,5 +120,4 @@ public class UsuarioEntity {
     public void setRol(RolEntity rol) {
         this.rol = rol;
     }
-    
 }

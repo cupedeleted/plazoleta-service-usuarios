@@ -35,4 +35,15 @@ public class UsuarioController {
         UsuarioResponseDto creado = usuarioHandle.crearPropietario(solicitud);
         return ResponseEntity.status(HttpStatus.CREATED).body(creado);
     }
+
+    @Operation(summary = "Crear cliente", description = "Crea una cuenta de cliente. La clave se guarda encriptada.")
+    @ApiResponse(responseCode = "201", description = "Cliente creado")
+    @ApiResponse(responseCode = "400", description = "Datos inválidos")
+    @ApiResponse(responseCode = "500", description = "Rol cliente no encontrado")
+    @PostMapping("/cliente")
+    public ResponseEntity<UsuarioResponseDto> crearCliente(@RequestBody UsuarioDto solicitud) {
+        UsuarioResponseDto creado = usuarioHandle.crearCliente(solicitud);
+        return ResponseEntity.status(HttpStatus.CREATED).body(creado);
+    }
+
 }

@@ -1,3 +1,4 @@
+
 package com.example.usuarios.application.usecase;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,8 +38,8 @@ class UsuarioUseCaseTest {
 
     @InjectMocks
     private UsuarioUseCase usuarioUseCase;
-    
-    private Usuario registroValido(){
+
+    private Usuario registroValido() {
         Usuario usuario = new Usuario();
         usuario.setNombre("Carla");
         usuario.setApellido("Granados");
@@ -49,57 +50,202 @@ class UsuarioUseCaseTest {
         usuario.setClave("123");
         return usuario;
     }
-        @Test 
-        void seCreaCorrectamente(){
-            assertNotNull(usuarioUseCase);
-        }
-        @Test 
-        void noHayDatos(){
-            Usuario usuario= new Usuario();
-            assertThrows(DatoInvalido.class, () -> usuarioUseCase.crearPropietario(usuario));
-        }
-        @Test 
-        void documentoConLetras(){
-            Usuario usuario= registroValido();
-            usuario.setDocumentoDeIdentidad("12as");
-            assertThrows(DatoInvalido.class,() -> usuarioUseCase.crearPropietario(usuario));
-    }
-        @Test 
-        void celularMuyLargo(){
-            Usuario usuario = registroValido();
-            usuario.setCelular("+5730056983251");
-            assertThrows(DatoInvalido.class, () -> usuarioUseCase.crearPropietario(usuario));
-    
-        }
-        @Test 
-        void correoInvalido(){
-            Usuario usuario = registroValido();
-            usuario.setCorreo("azk12");
-            assertThrows(DatoInvalido.class, () -> usuarioUseCase.crearPropietario(usuario));   
-        }
-        @Test 
-        void mayorEdad(){
-            Usuario usuario = registroValido();
-            usuario.setFechaNacimiento(LocalDate.now().minusYears(10));
-            assertThrows(DatoInvalido.class, () -> usuarioUseCase.crearPropietario(usuario));
-        }  
-        @Test 
-        void rolNoEncontrado() {
-            Usuario usuario = registroValido();
-            when(rolRepositoryPort.buscarPorNombre("PROPIETARIO")).thenReturn(Optional.empty());
-            assertThrows(RolNoEncontrado.class,() -> usuarioUseCase.crearPropietario(usuario));
-    }
-        @Test 
-        void datosValidos(){
-            Usuario usuario = registroValido();
-            Rol rol = new Rol(1L, "PROPIETARIO", "Propietario");
-            when(rolRepositoryPort.buscarPorNombre("PROPIETARIO")).thenReturn(Optional.of(rol));
-            when(encriptadorClavePort.encriptar("123")).thenReturn("clave");
-            when(usuarioRepositoryPort.guardarUsuario(usuario)).thenReturn(usuario);
 
-            Usuario resultado = usuarioUseCase.crearPropietario(usuario);
-            assertEquals("PROPIETARIO", resultado.getRol().getNombre());
-            assertEquals("clave", resultado.getClave());
-            verify(usuarioRepositoryPort).guardarUsuario(usuario);
+    @Test
+    void seCreaCorrectamente() {
+        assertNotNull(usuarioUseCase);
+    }
+
+    @Test
+    void noHayDatos() {
+        Usuario usuario = new Usuario();
+
+        assertThrows(DatoInvalido.class,
+                () -> usuarioUseCase.crearPropietario(usuario));
+    }
+
+    @Test
+    void documentoConLetras() {
+        Usuario usuario = registroValido();
+        usuario.setDocumentoDeIdentidad("12as");
+
+        assertThrows(DatoInvalido.class,
+                () -> usuarioUseCase.crearPropietario(usuario));
+    }
+
+    @Test
+    void celularMuyLargo() {
+        Usuario usuario = registroValido();
+        usuario.setCelular("+5730056983251");
+
+        assertThrows(DatoInvalido.class,
+                () -> usuarioUseCase.crearPropietario(usuario));
+    }
+
+    @Test
+    void correoInvalido() {
+        Usuario usuario = registroValido();
+        usuario.setCorreo("azk12");
+
+        assertThrows(DatoInvalido.class,
+                () -> usuarioUseCase.crearPropietario(usuario));
+    }
+
+    @Test
+    void mayorEdad() {
+        Usuario usuario = registroValido();
+        usuario.setFechaNacimiento(LocalDate.now().minusYears(10));
+
+        assertThrows(DatoInvalido.class,
+                () -> usuarioUseCase.crearPropietario(usuario));
+    }
+
+    @Test
+    void rolNoEncontrado() {
+        Usuario usuario = registroValido();
+
+        when(rolRepositoryPort.buscarPorNombre("PROPIETARIO"))
+                .thenReturn(Optional.empty());
+
+        assertThrows(RolNoEncontrado.class,
+                () -> usuarioUseCase.crearPropietario(usuario));
+    }
+
+    @Test
+    void datosValidos() {
+        Usuario usuario = registroValido();
+        Rol rol = new Rol(1L, "PROPIETARIO", "Propietario");
+
+        when(rolRepositoryPort.buscarPorNombre("PROPIETARIO"))
+                .thenReturn(Optional.of(rol));
+
+        when(encriptadorClavePort.encriptar("123"))
+                .thenReturn("clave");
+
+        when(usuarioRepositoryPort.guardarUsuario(usuario))
+                .thenReturn(usuario);
+
+        Usuario resultado = usuarioUseCase.crearPropietario(usuario);
+
+        assertEquals("PROPIETARIO", resultado.getRol().getNombre());
+        assertEquals("clave", resultado.getClave());
+
+        verify(usuarioRepositoryPort).guardarUsuario(usuario);
+    }
+
+    @Test
+    void crearClienteDatosValidos() {
+        Usuario usuario = registroValido();
+        Rol rol = new Rol(2L, "CLIENTE", "Cliente");
+
+        when(rolRepositoryPort.buscarPorNombre("CLIENTE"))
+                .thenReturn(Optional.of(rol));
+
+        when(encriptadorClavePort.encriptar("123"))
+                .thenReturn("claveEncriptada");
+
+        when(usuarioRepositoryPort.guardarUsuario(usuario))
+                .thenReturn(usuario);
+
+        Usuario resultado = usuarioUseCase.crearCliente(usuario);
+
+        assertNotNull(resultado);
+        assertEquals("CLIENTE", resultado.getRol().getNombre());
+        assertEquals("claveEncriptada", resultado.getClave());
+
+        verify(usuarioRepositoryPort).guardarUsuario(usuario);
+    }
+
+    @Test
+    void crearClienteSinDatos() {
+        Usuario usuario = new Usuario();
+
+        assertThrows(DatoInvalido.class,
+                () -> usuarioUseCase.crearCliente(usuario));
+    }
+
+    @Test
+    void crearClienteDocumentoConLetras() {
+        Usuario usuario = registroValido();
+        usuario.setDocumentoDeIdentidad("12as");
+
+        assertThrows(DatoInvalido.class,
+                () -> usuarioUseCase.crearCliente(usuario));
+    }
+
+    @Test
+    void crearClienteCelularMuyLargo() {
+        Usuario usuario = registroValido();
+        usuario.setCelular("+5730056983251");
+
+        assertThrows(DatoInvalido.class,
+                () -> usuarioUseCase.crearCliente(usuario));
+    }
+
+    @Test
+    void crearClienteCorreoInvalido() {
+        Usuario usuario = registroValido();
+        usuario.setCorreo("azk12");
+
+        assertThrows(DatoInvalido.class,
+                () -> usuarioUseCase.crearCliente(usuario));
+    }
+
+    @Test
+    void crearClienteRolNoEncontrado() {
+        Usuario usuario = registroValido();
+
+        when(rolRepositoryPort.buscarPorNombre("CLIENTE"))
+                .thenReturn(Optional.empty());
+
+        assertThrows(RolNoEncontrado.class,
+                () -> usuarioUseCase.crearCliente(usuario));
+    }
+
+    @Test
+    void crearClienteEncriptaClaveAntesDeGuardar() {
+        Usuario usuario = registroValido();
+        Rol rol = new Rol(2L, "CLIENTE", "Cliente");
+
+        when(rolRepositoryPort.buscarPorNombre("CLIENTE"))
+                .thenReturn(Optional.of(rol));
+
+        when(encriptadorClavePort.encriptar("123"))
+                .thenReturn("claveEncriptada");
+
+        when(usuarioRepositoryPort.guardarUsuario(usuario))
+                .thenReturn(usuario);
+
+        usuarioUseCase.crearCliente(usuario);
+
+        verify(encriptadorClavePort).encriptar("123");
+        verify(usuarioRepositoryPort).guardarUsuario(usuario);
+
+        assertEquals("claveEncriptada", usuario.getClave());
+    }
+
+    @Test
+    void crearClienteSinFechaNacimiento() {
+        Usuario usuario = registroValido();
+        usuario.setFechaNacimiento(null);
+
+        Rol rol = new Rol(2L, "CLIENTE", "Cliente");
+
+        when(rolRepositoryPort.buscarPorNombre("CLIENTE"))
+                .thenReturn(Optional.of(rol));
+
+        when(encriptadorClavePort.encriptar("123"))
+                .thenReturn("claveEncriptada");
+
+        when(usuarioRepositoryPort.guardarUsuario(usuario))
+                .thenReturn(usuario);
+
+        Usuario resultado = usuarioUseCase.crearCliente(usuario);
+
+        assertNotNull(resultado);
+        assertEquals(null, resultado.getFechaNacimiento());
+        assertEquals("CLIENTE", resultado.getRol().getNombre());
+
+        verify(usuarioRepositoryPort).guardarUsuario(usuario);
     }
 }
