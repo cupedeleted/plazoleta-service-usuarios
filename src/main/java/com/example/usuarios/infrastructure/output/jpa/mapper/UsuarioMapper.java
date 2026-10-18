@@ -5,17 +5,16 @@ import com.example.usuarios.infrastructure.output.jpa.entity.UsuarioEntity;
 
 public class UsuarioMapper {
 
-        private final RolMapper rolMapper;
+    private final RolMapper rolMapper;
 
-        public UsuarioMapper(RolMapper rolMapper) {
-            this.rolMapper = rolMapper;
+    public UsuarioMapper(RolMapper rolMapper) {
+        this.rolMapper = rolMapper;
+    }
+
+    public User toDomain(UsuarioEntity usuarioEntity) {
+        if (usuarioEntity == null) {
+            return null;
         }
-        
-    public User toDomain(UsuarioEntity usuarioEntity){
-        if(usuarioEntity == null){
-            return  null;
-
-}
         User usuario = new User();
         usuario.setId(usuarioEntity.getId());
         usuario.setNombre(usuarioEntity.getNombre());
@@ -27,14 +26,15 @@ public class UsuarioMapper {
         usuario.setClave(usuarioEntity.getClave());
         usuario.setRol(rolMapper.toDomain(usuarioEntity.getRol()));
         return usuario;
-}
+    }
+
         public UsuarioEntity toEntity(User usuario) {
         if (usuario == null) {
             return null;
         }
         UsuarioEntity entity = new UsuarioEntity();
-        
-        entity.setId(usuario.getId());
+        // En el dominio el id es long: 0 significa "usuario nuevo", y JPA necesita null
+        entity.setId(usuario.getId() == 0 ? null : usuario.getId());
         entity.setNombre(usuario.getNombre());
         entity.setApellido(usuario.getApellido());
         entity.setDocumentoDeIdentidad(usuario.getDocumentoDeIdentidad());
@@ -46,4 +46,3 @@ public class UsuarioMapper {
         return entity;
     }
 }
-
