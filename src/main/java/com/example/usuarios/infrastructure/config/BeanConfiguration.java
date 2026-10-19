@@ -3,7 +3,6 @@ package com.example.usuarios.infrastructure.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.client.RestClient;
 
 import com.example.usuarios.application.handler.AuthHandler;
