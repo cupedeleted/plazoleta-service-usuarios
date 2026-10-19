@@ -1,51 +1,64 @@
 package com.example.usuarios.application.usecase;
 
-import com.example.usuarios.domain.exception.DatoInvalido;
-import com.example.usuarios.domain.api.IUsuarioServicePort;
-import com.example.usuarios.domain.model.User;
-import com.example.usuarios.domain.spi.EncriptadorClavePort;
-import com.example.usuarios.domain.spi.RolRepositoryPort;
-import com.example.usuarios.domain.spi.UserRepositoryPort;
-import com.example.usuarios.domain.exception.RolNoEncontrado;
-import com.example.usuarios.domain.model.Rol;
-import java.util.regex.Pattern;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.regex.Pattern;
+
+import com.example.usuarios.domain.api.IUsuarioServicePort;
+import com.example.usuarios.domain.exception.AccesoNoPermitido;
+import com.example.usuarios.domain.exception.DatoInvalido;
+import com.example.usuarios.domain.exception.RolNoEncontrado;
+import com.example.usuarios.domain.model.Rol;
+import com.example.usuarios.domain.model.User;
+import com.example.usuarios.domain.spi.EncriptadorClavePort;
+import com.example.usuarios.domain.spi.IRestaurantPersistencePort;
+import com.example.usuarios.domain.spi.RolRepositoryPort;
+import com.example.usuarios.domain.spi.UserRepositoryPort;
 
 public class UserUseCase implements IUsuarioServicePort {
-    private static final Pattern patron = Pattern.compile("^\\d+$");
-    private static final Pattern max_telefono = Pattern.compile("^\\+?\\d+$");
-    private static final Pattern email_validar = Pattern.compile("^[\\w.+-]+@[\\w-]+(\\.[\\w-]+)+$");
-    private static final String rol = "PROPIETARIO";
+    private static final Pattern SOLO_NUMEROS = Pattern.compile("^\\d+$");
+    private static final Pattern CELULAR = Pattern.compile("^\\+?\\d+$");
+    private static final Pattern CORREO = Pattern.compile("^[\\w.+-]+@[\\w-]+(\\.[\\w-]+)+$");
+    private static final String ROL_PROPIETARIO = "PROPIETARIO";
+    private static final String ROL_EMPLEADO = "EMPLEADO";
+
     private final UserRepositoryPort usuarioRepositoryPort;
     private final RolRepositoryPort rolRepositoryPort;
     private final EncriptadorClavePort encriptadorClavePort;
+    private final IRestaurantPersistencePort restaurantPersistencePort;
 
     public UserUseCase(UserRepositoryPort usuarioRepositoryPort, RolRepositoryPort rolRepositoryPort,
-            EncriptadorClavePort encriptadorClavePort) {
+            EncriptadorClavePort encriptadorClavePort, IRestaurantPersistencePort restaurantPersistencePort) {
         this.usuarioRepositoryPort = usuarioRepositoryPort;
         this.rolRepositoryPort = rolRepositoryPort;
         this.encriptadorClavePort = encriptadorClavePort;
+        this.restaurantPersistencePort = restaurantPersistencePort;
     }
 
     @Override
     public User crearPropietario(User usuario) {
-        validarCampos(usuario);
-        validarDocumento(usuario.getDocumentoDeIdentidad());
-        validarCelular(usuario.getCelular());
-        validarCorreo(usuario.getCorreo());
+        return crearConRol(usuario, ROL_PROPIETARIO);
+    }
 
-        if (usuarioRepositoryPort.existePorCorreo(usuario.getCorreo())) {
-            throw new DatoInvalido("Ya existe un usuario con ese correo");
+    @Override
+    public User crearEmpleado(User empleado, Long idRestaurante, String correoPropietario) {
+        if (idRestaurante == null) {
+            throw new DatoInvalido("El id del restaurante es obligatorio");
         }
+        validarPropietarioDelRestaurante(idRestaurante, correoPropietario);
+        return crearConRol(empleado, ROL_EMPLEADO);
+    }
 
-        validarMayorEdad(usuario.getFechaNacimiento());
-        Rol rolPropietario = rolRepositoryPort.buscarPorNombre(rol).orElseThrow(() -> new RolNoEncontrado(rol));
-        usuario.setRol(rolPropietario);
-        usuario.setClave(encriptadorClavePort.encriptar(usuario.getClave()));
-        return usuarioRepositoryPort.guardarUsuario(usuario);
-        
-        
+    private void validarPropietarioDelRestaurante(Long idRestaurante, String correoPropietario) {
+        User propietario = usuarioRepositoryPort.buscarPorCorreo(correoPropietario)
+                .orElseThrow(() -> new AccesoNoPermitido("No se pudo identificar al propietario"));
+        if (!restaurantPersistencePort.existsByIdAndPropietarioId(idRestaurante, propietario.getId())) {
+            throw new AccesoNoPermitido("El restaurante no pertenece al propietario");
+        }
+    }
+
+    private boolean vacio(String text) {
+        return text == null || text.isBlank();
     }
 
     private void validarCampos(User u) {
@@ -56,24 +69,20 @@ public class UserUseCase implements IUsuarioServicePort {
         }
     }
 
-    private boolean vacio(String text) {
-        return text == null || text.isBlank();
-    }
-
     private void validarDocumento(String documento) {
-        if (!patron.matcher(documento).matches()) {
+        if (!SOLO_NUMEROS.matcher(documento).matches()) {
             throw new DatoInvalido("El documento de identidad debe ser unicamente numerico");
         }
     }
 
     private void validarCelular(String telefono) {
-        if (telefono.length() > 13 || !max_telefono.matcher(telefono).matches()) {
+        if (telefono.length() > 13 || !CELULAR.matcher(telefono).matches()) {
             throw new DatoInvalido("El celular debe tener maximo 13 caracteres y puede iniciar con +");
         }
     }
 
     private void validarCorreo(String email) {
-        if (!email_validar.matcher(email).matches()) {
+        if (!CORREO.matcher(email).matches()) {
             throw new DatoInvalido("El correo no tiene un formato válido. Ejemplo: usuario@gmail.com");
         }
     }
@@ -84,4 +93,24 @@ public class UserUseCase implements IUsuarioServicePort {
             throw new DatoInvalido("El usuario debe ser mayor de edad");
         }
     }
-}           
+
+    private User crearConRol(User usuario, String nombreRol) {
+        validarCampos(usuario);
+        validarDocumento(usuario.getDocumentoDeIdentidad());
+        validarCelular(usuario.getCelular());
+        validarCorreo(usuario.getCorreo());
+        validarMayorEdad(usuario.getFechaNacimiento());
+        if (usuarioRepositoryPort.existePorCorreo(usuario.getCorreo())) {
+            throw new DatoInvalido("Ya existe un usuario con ese correo");
+        }
+        Rol rol = rolRepositoryPort.buscarPorNombre(nombreRol)
+                .orElseThrow(() -> new RolNoEncontrado(nombreRol));
+        usuario.setRol(rol);
+        usuario.setClave(encriptadorClavePort.encriptar(usuario.getClave()));
+        return usuarioRepositoryPort.guardarUsuario(usuario);
+    }
+
+    // validarCampos, vacio, validarDocumento, validarCelular, validarCorreo y
+    // validarMayorEdad quedan igual, usando las constantes renombradas
+    // (SOLO_NUMEROS, CELULAR, CORREO).
+}

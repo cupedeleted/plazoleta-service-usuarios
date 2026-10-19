@@ -3,6 +3,7 @@ package com.example.usuarios.infrastructure.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.client.RestClient;
 
 import com.example.usuarios.application.handler.AuthHandler;
@@ -74,8 +75,10 @@ public class BeanConfiguration {
     // ---------- Casos de uso y handlers ----------
     @Bean
     public IUsuarioServicePort usuarioServicePort(UserRepositoryPort usuarioRepositoryPort,
-            RolRepositoryPort rolRepositoryPort, EncriptadorClavePort encriptadorClavePort) {
-        return new UserUseCase(usuarioRepositoryPort, rolRepositoryPort, encriptadorClavePort);
+            RolRepositoryPort rolRepositoryPort, EncriptadorClavePort encriptadorClavePort,
+            IRestaurantPersistencePort restaurantPersistencePort) {
+        return new UserUseCase(usuarioRepositoryPort, rolRepositoryPort,
+            encriptadorClavePort, restaurantPersistencePort);
     }
 
     @Bean

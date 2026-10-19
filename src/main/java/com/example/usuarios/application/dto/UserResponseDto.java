@@ -11,7 +11,7 @@ public class UserResponseDto {
     private LocalDate fechaNacimiento;
     private String correo;
     private String rol;
-    private String clave;
+
     public UserResponseDto() {
     }
     public Long getId() {
@@ -61,12 +61,6 @@ public class UserResponseDto {
     }
     public void setRol(String rol) {
         this.rol = rol;
-    }
-    public String getClave() {
-        return clave;
-    }
-    public void setClave(String clave) {
-        this.clave = clave;
     }
     
 }

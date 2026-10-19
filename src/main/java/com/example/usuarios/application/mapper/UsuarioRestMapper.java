@@ -1,10 +1,11 @@
 package com.example.usuarios.application.mapper;
 
 import com.example.usuarios.domain.model.User;
+import com.example.usuarios.application.dto.UserRequestDto;
 import com.example.usuarios.application.dto.UserResponseDto;
 
 public class UsuarioRestMapper {
-    public User toDomain(UserResponseDto dto) {
+    public User toDomain(UserRequestDto dto) {
         User usuario = new User();
         usuario.setNombre(dto.getNombre());
         usuario.setApellido(dto.getApellido());

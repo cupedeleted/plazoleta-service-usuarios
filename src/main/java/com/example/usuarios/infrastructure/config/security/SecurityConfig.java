@@ -35,6 +35,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/auth/login").permitAll()
                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/usuarios/propietario").hasRole("ADMINISTRADOR")
+                .requestMatchers("/usuarios/propietario").hasRole("ADMINISTRADOR")
+                .requestMatchers("/usuarios/empleado").hasRole("PROPIETARIO")
                 .anyRequest().authenticated()
             )
             .addFilterBefore(new JwtTokenFilter(tokenServicePort), UsernamePasswordAuthenticationFilter.class);
