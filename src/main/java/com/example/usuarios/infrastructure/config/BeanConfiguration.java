@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.example.usuarios.application.handler.UsuarioHandle;
+import com.example.usuarios.infrastructure.output.jpa.mapper.RolEntityMapper;
+import com.example.usuarios.infrastructure.output.jpa.mapper.UsuarioEntityMapper;
 import com.example.usuarios.application.mapper.UsuarioRestMapper;
 import com.example.usuarios.application.usecase.UsuarioUseCase;
 import com.example.usuarios.domain.api.IUsuarioServicePort;
@@ -16,8 +18,7 @@ import com.example.usuarios.infrastructure.config.security.BCryptEncriptadorAdap
 import com.example.usuarios.infrastructure.output.jpa.adapter.RestaurantHttpAdapter;
 import com.example.usuarios.infrastructure.output.jpa.adapter.RolAdapter;
 import com.example.usuarios.infrastructure.output.jpa.adapter.UsuarioAdapter;
-import com.example.usuarios.infrastructure.output.jpa.mapper.RolMapper;
-import com.example.usuarios.infrastructure.output.jpa.mapper.UsuarioMapper;
+
 import org.springframework.web.client.RestClient;
 
 import com.example.usuarios.infrastructure.output.jpa.repository.RolRepository;
@@ -26,24 +27,24 @@ import com.example.usuarios.infrastructure.output.jpa.repository.UsuarioReposito
 @Configuration
 public class BeanConfiguration {
     @Bean
-    public RolMapper rolMapper() {
-        return new RolMapper();
+    public RolEntityMapper rolMapper() {
+        return new RolEntityMapper();
     }
 
     @Bean
-    public UsuarioMapper usuarioMapper(RolMapper rolMapper) {
-        return new UsuarioMapper(rolMapper);
+    public UsuarioEntityMapper usuarioMapper(RolEntityMapper rolMapper) {
+        return new UsuarioEntityMapper(rolMapper);
     }
 
     @Bean
     public UsuarioRepositoryPort usuarioRepositoryPort(UsuarioRepository usuarioRepository,
-            UsuarioMapper usuarioMapper) {
+            UsuarioEntityMapper usuarioMapper) {
         return new UsuarioAdapter(usuarioRepository, usuarioMapper);
 
     }
 
     @Bean
-    public RolRepositoryPort rolRepositoryPort(RolRepository rolRepository, RolMapper rolMapper) {
+    public RolRepositoryPort rolRepositoryPort(RolRepository rolRepository, RolEntityMapper rolMapper) {
         return new RolAdapter(rolRepository, rolMapper);
     }
 

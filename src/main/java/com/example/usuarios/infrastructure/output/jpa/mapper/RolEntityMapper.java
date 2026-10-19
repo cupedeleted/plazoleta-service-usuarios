@@ -3,7 +3,7 @@ package com.example.usuarios.infrastructure.output.jpa.mapper;
 import com.example.usuarios.domain.model.Rol;
 import com.example.usuarios.infrastructure.output.jpa.entity.RolEntity;
 
-public class RolMapper {
+public class RolEntityMapper {
     public Rol toDomain(RolEntity entity) {
         if (entity == null) {
             return null;

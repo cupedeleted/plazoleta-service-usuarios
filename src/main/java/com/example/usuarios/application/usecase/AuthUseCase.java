@@ -2,7 +2,7 @@ package com.example.usuarios.application.usecase;
 
 import com.example.usuarios.application.dto.AuthResponseDto;
 import com.example.usuarios.domain.api.IAuthServicePort;
-import com.example.usuarios.domain.spi.ITokenServicePort;
+import com.example.usuarios.domain.api.ITokenServicePort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

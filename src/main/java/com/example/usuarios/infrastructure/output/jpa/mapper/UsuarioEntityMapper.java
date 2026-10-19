@@ -3,11 +3,11 @@ package com.example.usuarios.infrastructure.output.jpa.mapper;
 import com.example.usuarios.domain.model.User;
 import com.example.usuarios.infrastructure.output.jpa.entity.UsuarioEntity;
 
-public class UsuarioMapper {
+public class UsuarioEntityMapper {
 
-    private final RolMapper rolMapper;
+    private final RolEntityMapper rolMapper;
 
-    public UsuarioMapper(RolMapper rolMapper) {
+    public UsuarioEntityMapper(RolEntityMapper rolMapper) {
         this.rolMapper = rolMapper;
     }
 
