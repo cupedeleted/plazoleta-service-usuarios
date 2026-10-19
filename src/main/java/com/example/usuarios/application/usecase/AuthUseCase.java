@@ -27,6 +27,6 @@ public class AuthUseCase implements IAuthServicePort {
                 .filter(u -> encriptadorClavePort.coincide(clave, u.getClave()))
                 .orElseThrow(CredencialesInvalidas::new);
 
-        return tokenServicePort.createToken(usuario.getCorreo(), usuario.getRol().getNombre());
+        return tokenServicePort.createToken(usuario.getCorreo(), usuario.getRol().getNombre(), usuario.getId());
     }
 }

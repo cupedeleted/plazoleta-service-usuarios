@@ -5,6 +5,7 @@ import com.example.usuarios.domain.model.User;
 import com.example.usuarios.application.dto.EmployeeRequestDto;
 import com.example.usuarios.application.dto.UserRequestDto;
 import com.example.usuarios.application.dto.UserResponseDto;
+import com.example.usuarios.application.dto.RolResponseDto;
 import com.example.usuarios.application.mapper.UsuarioRestMapper;
 
 public class UsuarioHandle {
@@ -26,6 +27,10 @@ public class UsuarioHandle {
         User empleado = usuarioRestMapper.toDomain(solicitud);
         User creado = usuarioServicePort.crearEmpleado(empleado, solicitud.getIdRestaurante(), correoPropietario);
         return usuarioRestMapper.toResponse(creado);
+    }
+
+    public RolResponseDto obtenerRol(Long id){
+        return new RolResponseDto(usuarioServicePort.obtenerRol(id));
     }
 }
 

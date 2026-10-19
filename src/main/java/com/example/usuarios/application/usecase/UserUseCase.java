@@ -8,6 +8,7 @@ import com.example.usuarios.domain.api.IUsuarioServicePort;
 import com.example.usuarios.domain.exception.AccesoNoPermitido;
 import com.example.usuarios.domain.exception.DatoInvalido;
 import com.example.usuarios.domain.exception.RolNoEncontrado;
+import com.example.usuarios.domain.exception.UsuarioNoEncontrado;
 import com.example.usuarios.domain.model.Rol;
 import com.example.usuarios.domain.model.User;
 import com.example.usuarios.domain.spi.EncriptadorClavePort;
@@ -47,6 +48,13 @@ public class UserUseCase implements IUsuarioServicePort {
         }
         validarPropietarioDelRestaurante(idRestaurante, correoPropietario);
         return crearConRol(empleado, ROL_EMPLEADO);
+    }
+
+    @Override
+    public String obtenerRol(Long id){
+        return usuarioRepositoryPort.buscarPorId(id)
+                .map(u -> u.getRol().getNombre())
+                .orElseThrow(() -> new UsuarioNoEncontrado(id));
     }
 
     private void validarPropietarioDelRestaurante(Long idRestaurante, String correoPropietario) {

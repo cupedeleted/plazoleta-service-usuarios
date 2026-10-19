@@ -1,6 +1,7 @@
 package com.example.usuarios.infrastructure.config.security;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpMethod;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.web.SecurityFilterChain;
@@ -37,6 +38,7 @@ public class SecurityConfig {
                 .requestMatchers("/usuarios/propietario").hasRole("ADMINISTRADOR")
                 .requestMatchers("/usuarios/propietario").hasRole("ADMINISTRADOR")
                 .requestMatchers("/usuarios/empleado").hasRole("PROPIETARIO")
+                .requestMatchers(HttpMethod.GET, "/usuarios/*/rol").hasRole("ADMINISTRADOR")
                 .anyRequest().authenticated()
             )
             .addFilterBefore(new JwtTokenFilter(tokenServicePort), UsernamePasswordAuthenticationFilter.class);

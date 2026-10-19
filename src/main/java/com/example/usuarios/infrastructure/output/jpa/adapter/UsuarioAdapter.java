@@ -34,4 +34,9 @@ public class UsuarioAdapter implements UserRepositoryPort {
         return usuarioRepository.existsByCorreo(correo);
     }
 
+    @Override
+    public Optional<User> buscarPorId(Long id){
+        return usuarioRepository.findById(id).map(usuarioMapper::toDomain);
+    }
+
 }

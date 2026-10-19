@@ -17,7 +17,7 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <name>usuarios</name>
-    <description>Microservicio de restaurantes y platos</description>
+    <description>Microservicio de usuarios</description>
 
     <properties>
         <java.version>21</java.version>

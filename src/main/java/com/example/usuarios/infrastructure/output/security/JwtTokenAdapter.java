@@ -19,10 +19,11 @@ public class JwtTokenAdapter implements ITokenServicePort {
     }
 
     @Override
-    public String createToken(String correo, String rol) {
+    public String createToken(String correo, String rol, Long userId) {
         return Jwts.builder()
                 .setSubject(correo)
                 .claim("role", rol)
+                .claim("userId", rol)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(secretKey)
