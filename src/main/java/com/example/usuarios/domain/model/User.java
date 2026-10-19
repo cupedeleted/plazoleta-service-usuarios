@@ -12,6 +12,7 @@ public class User {
     private String clave;
     private String documentoDeIdentidad;
     private Rol rol;
+    private Long idRestaurante;
 
     public String getNombre() {
         return nombre;
@@ -83,6 +84,14 @@ public class User {
 
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    public Long getIdRestaurante() {
+        return idRestaurante;
+    }
+
+    public void setIdRestaurante(Long idRestaurante) {
+        this.idRestaurante = idRestaurante;
     }
 
 }

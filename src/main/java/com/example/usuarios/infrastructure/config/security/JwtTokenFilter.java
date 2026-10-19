@@ -1,6 +1,5 @@
 package com.example.usuarios.infrastructure.config.security;
 
-import com.example.usuarios.domain.spi.ITokenServicePort;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +8,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.example.usuarios.domain.api.ITokenServicePort;
 
 import java.io.IOException;
 import java.util.Collections;

@@ -1,11 +1,12 @@
 package com.example.usuarios.infrastructure.output.jpa.adapter;
 
-import com.example.usuarios.domain.spi.ITokenServicePort;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
+
+import com.example.usuarios.domain.api.ITokenServicePort;
 
 import java.security.Key;
 import java.util.Date;

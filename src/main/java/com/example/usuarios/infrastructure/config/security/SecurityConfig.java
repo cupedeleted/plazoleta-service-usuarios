@@ -1,6 +1,5 @@
 package com.example.usuarios.infrastructure.config.security;
 
-import com.example.usuarios.domain.spi.ITokenServicePort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.example.usuarios.domain.api.ITokenServicePort;
 
 @Configuration
 @EnableWebSecurity
