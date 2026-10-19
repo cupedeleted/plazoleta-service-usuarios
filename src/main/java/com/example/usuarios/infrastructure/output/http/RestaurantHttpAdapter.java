@@ -1,4 +1,4 @@
-package com.example.usuarios.infrastructure.output.jpa.adapter;
+package com.example.usuarios.infrastructure.output.http;
 
 import com.example.usuarios.domain.spi.IRestaurantPersistencePort;
 import org.springframework.web.client.RestClient;

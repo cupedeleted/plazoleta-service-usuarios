@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.example.usuarios.domain.exception.DatoInvalido;
 import com.example.usuarios.domain.exception.RolNoEncontrado;
+import com.example.usuarios.domain.exception.CredencialesInvalidas;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -23,5 +24,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> rolNoEncontrado(RolNoEncontrado ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("mensaje", ex.getMessage()));
+    }
+
+    @ExceptionHandler(CredencialesInvalidas.class)
+    public ResponseEntity<Map<String, String>> credencialesInvalidas(CredencialesInvalidas ex) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(Map.of("mensaje", ex.getMessage()));
     }
 }

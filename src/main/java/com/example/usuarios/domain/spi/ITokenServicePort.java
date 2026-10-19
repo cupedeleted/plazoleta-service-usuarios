@@ -1,4 +1,4 @@
-package com.example.usuarios.domain.api;
+package com.example.usuarios.domain.spi;
 
 public interface ITokenServicePort {
     String createToken(String correo, String rol);

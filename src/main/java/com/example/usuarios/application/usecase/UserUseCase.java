@@ -5,23 +5,23 @@ import com.example.usuarios.domain.api.IUsuarioServicePort;
 import com.example.usuarios.domain.model.User;
 import com.example.usuarios.domain.spi.EncriptadorClavePort;
 import com.example.usuarios.domain.spi.RolRepositoryPort;
-import com.example.usuarios.domain.spi.UsuarioRepositoryPort;
+import com.example.usuarios.domain.spi.UserRepositoryPort;
 import com.example.usuarios.domain.exception.RolNoEncontrado;
 import com.example.usuarios.domain.model.Rol;
 import java.util.regex.Pattern;
 import java.time.LocalDate;
 import java.time.Period;
 
-public class UsuarioUseCase implements IUsuarioServicePort {
+public class UserUseCase implements IUsuarioServicePort {
     private static final Pattern patron = Pattern.compile("^\\d+$");
     private static final Pattern max_telefono = Pattern.compile("^\\+?\\d+$");
     private static final Pattern email_validar = Pattern.compile("^[\\w.+-]+@[\\w-]+(\\.[\\w-]+)+$");
     private static final String rol = "PROPIETARIO";
-    private final UsuarioRepositoryPort usuarioRepositoryPort;
+    private final UserRepositoryPort usuarioRepositoryPort;
     private final RolRepositoryPort rolRepositoryPort;
     private final EncriptadorClavePort encriptadorClavePort;
 
-    public UsuarioUseCase(UsuarioRepositoryPort usuarioRepositoryPort, RolRepositoryPort rolRepositoryPort,
+    public UserUseCase(UserRepositoryPort usuarioRepositoryPort, RolRepositoryPort rolRepositoryPort,
             EncriptadorClavePort encriptadorClavePort) {
         this.usuarioRepositoryPort = usuarioRepositoryPort;
         this.rolRepositoryPort = rolRepositoryPort;
@@ -34,6 +34,11 @@ public class UsuarioUseCase implements IUsuarioServicePort {
         validarDocumento(usuario.getDocumentoDeIdentidad());
         validarCelular(usuario.getCelular());
         validarCorreo(usuario.getCorreo());
+
+        if (usuarioRepositoryPort.existePorCorreo(usuario.getCorreo())) {
+            throw new DatoInvalido("Ya existe un usuario con ese correo");
+        }
+
         validarMayorEdad(usuario.getFechaNacimiento());
         Rol rolPropietario = rolRepositoryPort.buscarPorNombre(rol).orElseThrow(() -> new RolNoEncontrado(rol));
         usuario.setRol(rolPropietario);

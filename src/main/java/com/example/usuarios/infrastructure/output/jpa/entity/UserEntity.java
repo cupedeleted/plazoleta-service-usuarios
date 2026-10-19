@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity 
 @Table(name = "usuarios")
-public class UsuarioEntity {
+public class UserEntity {
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,7 +35,7 @@ public class UsuarioEntity {
     @Column(name = "fecha_nacimiento", nullable = false)
         private LocalDate fechaNacimiento;
 
-    @Column(nullable = false, length = 150)
+    @Column(nullable = false, unique = true, length = 150)
     private String correo;
 
     @Column(nullable = false, length = 100)
@@ -45,7 +45,7 @@ public class UsuarioEntity {
     @JoinColumn(name = "rol_id", nullable = false)
     private RolEntity rol;
 
-    public UsuarioEntity() {
+    public UserEntity() {
     }
 
     public Long getId() {

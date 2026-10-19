@@ -9,7 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.usuarios.domain.api.ITokenServicePort;
+import com.example.usuarios.domain.spi.ITokenServicePort;
 
 import java.io.IOException;
 import java.util.Collections;

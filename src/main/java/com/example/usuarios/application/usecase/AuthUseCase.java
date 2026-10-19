@@ -1,34 +1,32 @@
 package com.example.usuarios.application.usecase;
 
-import com.example.usuarios.application.dto.AuthResponseDto;
 import com.example.usuarios.domain.api.IAuthServicePort;
-import com.example.usuarios.domain.api.ITokenServicePort;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import com.example.usuarios.domain.exception.CredencialesInvalidas;
+import com.example.usuarios.domain.model.User;
+import com.example.usuarios.domain.spi.EncriptadorClavePort;
+import com.example.usuarios.domain.spi.ITokenServicePort;
+import com.example.usuarios.domain.spi.UserRepositoryPort;
 
 public class AuthUseCase implements IAuthServicePort {
 
-    private final AuthenticationManager authenticationManager;
+    private final UserRepositoryPort usuarioRepositoryPort;
+    private final EncriptadorClavePort encriptadorClavePort;
     private final ITokenServicePort tokenServicePort;
 
-    public AuthUseCase(AuthenticationManager authenticationManager, ITokenServicePort tokenServicePort) {
-        this.authenticationManager = authenticationManager;
+    public AuthUseCase(UserRepositoryPort usuarioRepositoryPort,
+                       EncriptadorClavePort encriptadorClavePort,
+                       ITokenServicePort tokenServicePort) {
+        this.usuarioRepositoryPort = usuarioRepositoryPort;
+        this.encriptadorClavePort = encriptadorClavePort;
         this.tokenServicePort = tokenServicePort;
     }
 
     @Override
-    public AuthResponseDto login(String correo, String clave) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(correo, clave)
-        );
+    public String login(String correo, String clave) {
+        User usuario = usuarioRepositoryPort.buscarPorCorreo(correo)
+                .filter(u -> encriptadorClavePort.coincide(clave, u.getClave()))
+                .orElseThrow(CredencialesInvalidas::new);
 
-        String userEmail = authentication.getName();
-        String rol = authentication.getAuthorities().iterator().next().getAuthority();
-
-        // Si la autenticación es exitosa, generar el token JWT a través del puerto SPI
-        String token = tokenServicePort.createToken(userEmail, rol);
-
-        return new AuthResponseDto(token);
+        return tokenServicePort.createToken(usuario.getCorreo(), usuario.getRol().getNombre());
     }
 }

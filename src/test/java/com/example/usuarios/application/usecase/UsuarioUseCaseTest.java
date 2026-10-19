@@ -6,14 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDate;
-import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDate;
+import java.util.Optional;
 
 import com.example.usuarios.domain.exception.DatoInvalido;
 import com.example.usuarios.domain.exception.RolNoEncontrado;
@@ -21,13 +21,13 @@ import com.example.usuarios.domain.model.Rol;
 import com.example.usuarios.domain.model.User;
 import com.example.usuarios.domain.spi.EncriptadorClavePort;
 import com.example.usuarios.domain.spi.RolRepositoryPort;
-import com.example.usuarios.domain.spi.UsuarioRepositoryPort;
+import com.example.usuarios.domain.spi.UserRepositoryPort;
 
 @ExtendWith(MockitoExtension.class)
 class UsuarioUseCaseTest {
 
     @Mock
-    private UsuarioRepositoryPort usuarioRepositoryPort;
+    private UserRepositoryPort usuarioRepositoryPort;
 
     @Mock
     private RolRepositoryPort rolRepositoryPort;
@@ -36,7 +36,7 @@ class UsuarioUseCaseTest {
     private EncriptadorClavePort encriptadorClavePort;
 
     @InjectMocks
-    private UsuarioUseCase usuarioUseCase;
+    private UserUseCase usuarioUseCase;
     
     private User registroValido(){
         User usuario = new User();

@@ -1,4 +1,4 @@
-package com.example.usuarios.infrastructure.config.security;
+package com.example.usuarios.infrastructure.output.security;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -11,5 +11,10 @@ public class BCryptEncriptadorAdapter implements EncriptadorClavePort {
     @Override
     public String encriptar(String clave) {
         return encoder.encode(clave);
+    }
+
+    @Override 
+    public boolean coincide(String claveSinEncriptar, String claveEncriptada){
+        return encoder.matches(claveSinEncriptar, claveEncriptada);
     }
 }
