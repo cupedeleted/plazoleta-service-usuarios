@@ -2,7 +2,7 @@ package com.example.usuarios.domain.model;
 
 import java.time.LocalDate;
 
-public class Usuario {
+public class User {
     private String nombre;
     private String apellido;
     private long id;
@@ -12,6 +12,7 @@ public class Usuario {
     private String clave;
     private String documentoDeIdentidad;
     private Rol rol;
+    private Long idRestaurante;
 
     public String getNombre() {
         return nombre;
@@ -83,6 +84,14 @@ public class Usuario {
 
     public void setRol(Rol rol) {
         this.rol = rol;
+    }
+
+    public Long getIdRestaurante() {
+        return idRestaurante;
+    }
+
+    public void setIdRestaurante(Long idRestaurante) {
+        this.idRestaurante = idRestaurante;
     }
 
 }
